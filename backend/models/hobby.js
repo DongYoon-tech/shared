@@ -49,18 +49,30 @@ class Hobby {
         return result.rows[0];
     }
 
-    // static async update(id, data) {
-    //     let { query, values } = sqlForPartialUpdate("jobs", data, "id", id);
+    static async update(id, data) {
 
-    //     const result = await db.query(query, values);
-    //     const job = result.rows[0];
+        const query = `UPDATE hobbies
+                        SET (activity = $1,
+                            user_username = $2)
+                        WHERE id = $3
+                        RETURNING id,
+                                activity,
+                                user_username,
+                                created_at`;
+        const values = [
+            data.activity,
+            data.user_username,
+            id
+        ]
+        const result = await db.query(query, values);
+        const hobby = result.rows[0];
 
-    //     if (!job) {
-    //         throw new ExpressError(`There exists no job '${id}`, 404);
-    //     }
+        if (!hobby) {
+            throw new ExpressError(`There exists no hobby '${id}`, 404);
+        }
 
-    //     return job;
-    // }
+        return job;
+    }
 
     static async remove(id) {
         const result = await db.query(

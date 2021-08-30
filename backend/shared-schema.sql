@@ -4,13 +4,14 @@ CREATE TABLE users (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT NOT NULL
-    CHECK (position('@' IN email) > 1)
+    CHECK (position('@' IN email) > 1),
+  hobbies TEXT
 );
 
 CREATE TABLE hobbies (
   id SERIAL PRIMARY KEY,
   activity TEXT NOT NULL,
-  user_username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
+  user_username TEXT NOT NULL REFERENCES users (username) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -31,7 +31,7 @@ class User {
             }
         }
 
-        throw ExpressError("Invalid Password", 401);
+        throw new ExpressError("Invalid Password", 401);
     }
 
     static async register(data) {
@@ -93,6 +93,14 @@ class User {
             throw new ExpressError(`There exists no user '${username}'`, 404);
         }
 
+        const userHobbiesRes = await db.query(
+            `SELECT h.activity, h.user_username
+            FROM hobbies AS h
+            WHERE h.user_username = $1`, [username]
+        )
+
+        user.hobby = userHobbiesRes.rows.map(h => h.user_username)
+
         // const userJobsRes = await db.query(
         //   `SELECT j.title, j.company_handle, a.state 
         //     FROM applications AS a
@@ -110,6 +118,7 @@ class User {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
 
+
         // let { query, values } = partialUpdate("users", data, "username", username);
 
         // const result = await db.query(query, values);
@@ -122,10 +131,36 @@ class User {
         // delete user.password;
         // delete user.is_admin;
 
-        return result.rows[0];
-    }
+        const res = await db.query(`
+                        UPDATE users
+                        SET (password = $1, 
+                            first_name = $2, 
+                            last_name = $3, 
+                            email = $4, 
+                            hobbies = $5)
+                        WHERE username = $6
+                        RETURNING username,
+                        first_name, 
+                        last_name, 
+                        email, 
+                        hobbies`,
+            [data.password,
+            data.first_name,
+            data.last_name,
+            data.email,
+            data.hobbies,
+                username])
 
-    /** Delete given user from database; returns undefined. */
+        const user = res.rows[0]
+
+        if (!user) {
+            throw new ExpressError(`There exists no user '${username}'`, 404);
+        }
+
+        delete user.password;
+
+        return user;
+    }
 
     static async remove(username) {
         let result = await db.query(
