@@ -15,7 +15,8 @@ class User {
               first_name, 
               last_name, 
               email, 
-              hobbies
+              lat,
+              lng
         FROM users 
         WHERE username = $1`,
             [data.username]
@@ -53,16 +54,17 @@ class User {
 
         const result = await db.query(
             `INSERT INTO users 
-          (username, password, first_name, last_name, email, hobbies) 
-        VALUES ($1, $2, $3, $4, $5, $6) 
-        RETURNING username, password, first_name, last_name, email, hobbies`,
+          (username, password, first_name, last_name, email, lat, lng) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7) 
+        RETURNING username, password, first_name, last_name, email, lat, lng`,
             [
                 data.username,
                 hashedPassword,
                 data.first_name,
                 data.last_name,
                 data.email,
-                data.hobbies
+                data.lat,
+                data.lng
             ]
         );
 
@@ -71,7 +73,7 @@ class User {
 
     static async findAll() {
         const result = await db.query(
-            `SELECT username, first_name, last_name, email, hobbies
+            `SELECT username, first_name, last_name, email,  lat, lng
         FROM users
         ORDER BY username`
         );
@@ -81,7 +83,7 @@ class User {
 
     static async findOne(username) {
         const userRes = await db.query(
-            `SELECT username, first_name, last_name, email, hobbies
+            `SELECT username, first_name, last_name, email,  lat, lng
         FROM users 
         WHERE username = $1`,
             [username]
@@ -94,13 +96,20 @@ class User {
         }
 
         const userHobbiesRes = await db.query(
-            `SELECT h.activity, h.user_username
+            `SELECT h.id, h.activity, h.user_username
             FROM hobbies AS h
             WHERE h.user_username = $1`, [username]
         )
 
-        user.hobby = userHobbiesRes.rows.map(h => h.user_username)
+        console.log("userHobbiesRes", userHobbiesRes.rows)
 
+        user.hobbies = userHobbiesRes.rows.map(h => (
+            {
+                id: h.id,
+                activity: h.activity
+            }
+        ))
+        console.log("userHobbies", user.hobbies)
         // const userJobsRes = await db.query(
         //   `SELECT j.title, j.company_handle, a.state 
         //     FROM applications AS a
@@ -137,8 +146,9 @@ class User {
                             first_name = $2, 
                             last_name = $3, 
                             email = $4, 
-                            hobbies = $5)
-                        WHERE username = $6
+                            lat = $5, 
+                            lng = $6)
+                        WHERE username = $7
                         RETURNING username,
                         first_name, 
                         last_name, 
@@ -148,7 +158,8 @@ class User {
             data.first_name,
             data.last_name,
             data.email,
-            data.hobbies,
+            data.lat,
+            data.lng,
                 username])
 
         const user = res.rows[0]

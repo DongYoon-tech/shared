@@ -5,13 +5,25 @@ CREATE TABLE users (
   last_name TEXT NOT NULL,
   email TEXT NOT NULL
     CHECK (position('@' IN email) > 1),
-  hobbies TEXT
+  lat FLOAT,
+  lng FLOAT
 );
 
 CREATE TABLE hobbies (
   id SERIAL PRIMARY KEY,
   activity TEXT NOT NULL,
+  meet_address TEXT NOT NULL,
   user_username TEXT NOT NULL REFERENCES users (username) ON DELETE CASCADE,
+  lat FLOAT,
+  lng FLOAT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Address for meetup location
+
+-- CREATE TABLE address (
+--   id SERIAL PRIMARY KEY,
+--   meet_address TEXT,
+--   hobbies_id INTEGER REFERENCES hobbies (id) ON DELETE CASCADE,
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );

@@ -3,11 +3,17 @@ const { SECRET_KEY } = require("../config");
 const ExpressError = require("../helpers/ExpressError");
 
 function authRequired(req, res, next) {
-    try {
-        const tokenStr = req.body._token || req.query._token;
 
-        let token = jwt.verify(tokenStr, SECRET_KEY);
-        res.locals.username = token.username;
+    try {
+        // console.log(req.headers.authorization)
+        // const tokenStr = req.body._token || req.query._token;
+        // let token = jwt.verify(tokenStr, SECRET_KEY);
+        // res.locals.username = token.username;
+        const authHeader = req.headers && req.headers.authorization;
+        if (authHeader) {
+            const token = authHeader.replace(/^[Bb]earer /, "").trim();
+            res.locals.user = jwt.verify(token, SECRET_KEY);
+        }
         return next();
     } catch (err) {
         return next(new ExpressError("You must authenticate first", 401));

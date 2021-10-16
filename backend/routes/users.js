@@ -12,7 +12,7 @@ const createToken = require('../helpers/createToken');
 const router = express.Router();
 
 /** GET / => {users: [user, ...]} */
-
+// authRequired
 router.get('/', authRequired, async function (req, res, next) {
     try {
         const users = await User.findAll();

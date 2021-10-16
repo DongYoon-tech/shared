@@ -1,18 +1,22 @@
 const express = require('express');
+const cors = require("cors");
 
 const ExpressError = require('./helpers/ExpressError');
 
 const usersRoutes = require('./routes/users');
 const hobbiesRoutes = require('./routes/hobbies');
+const addressesRoutes = require('./routes/addresses');
 const authRoutes = require('./routes/auth');
 
 const morgan = require('morgan');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
 
+app.use('/addresses', addressesRoutes);
 app.use('/hobbies', hobbiesRoutes);
 app.use('/users', usersRoutes);
 app.use('/', authRoutes);

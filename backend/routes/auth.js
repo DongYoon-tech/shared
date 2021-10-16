@@ -24,7 +24,7 @@ router.post("/login", async function (req, res, next) {
 });
 
 
-router.post("/register", async function (req, res, next) {
+router.post("/signup", async function (req, res, next) {
     try {
         const validation = validate(req.body, userRegisterSchema);
         if (!validation.valid) {

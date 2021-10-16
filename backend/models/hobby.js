@@ -6,7 +6,13 @@ class Hobby {
 
     static async findAll() {
         const result = await db.query(
-            `SELECT id, activity, user_username
+            `SELECT 
+            id, 
+            activity, 
+            meet_address, 
+            user_username,
+            lat,
+            lng
         FROM hobbies`
         )
         return result.rows
@@ -14,7 +20,12 @@ class Hobby {
 
     static async findOne(id) {
         const hobbyRes = await db.query(
-            `SELECT id, activity, user_username
+            `SELECT id, 
+            activity, 
+            meet_address, 
+            user_username,
+            lat,
+            lng
             FROM hobbies
             WHERE id = $1`,
             [id]
@@ -33,17 +44,42 @@ class Hobby {
             [hobby.user_username]
         );
 
+        // const addressRes = await db.query(
+        //     `SELECT id, meet_address, hobbies_id 
+        // FROM address
+        // WHERE hobbies_id = $1`,
+        //     [hobby.id]
+        // );
+
         hobby.userList = usersRes.rows[0];
+        // hobby.addressList = addressRes.rows[0];
 
         return hobby;
     }
 
     static async create(data) {
         const result = await db.query(
-            `INSERT INTO hobbies (activity, user_username) 
-        VALUES ($1, $2) 
-        RETURNING id, activity, user_username`,
-            [data.activity, data.user_username]
+            `INSERT INTO hobbies (
+                activity, 
+                meet_address, 
+                user_username,
+                lat,
+                lng) 
+        VALUES ($1, $2, $3, $4, $5) 
+        RETURNING 
+        id, 
+        activity, 
+        meet_address, 
+        user_username,
+        lat,
+        lng`,
+            [
+                data.activity,
+                data.meet_address,
+                data.user_username,
+                data.lat,
+                data.lng
+            ]
         );
 
         return result.rows[0];
@@ -53,15 +89,24 @@ class Hobby {
 
         const query = `UPDATE hobbies
                         SET (activity = $1,
-                            user_username = $2)
-                        WHERE id = $3
+                            meet_address =$2,
+                            user_username = $3,
+                            lat = $4,
+                            lng = $5)
+                        WHERE id = $6
                         RETURNING id,
                                 activity,
+                                meet_address,
                                 user_username,
+                                lat,
+                                lng,
                                 created_at`;
         const values = [
             data.activity,
+            data.meet_address,
             data.user_username,
+            data.lat,
+            data.lng,
             id
         ]
         const result = await db.query(query, values);
@@ -71,7 +116,7 @@ class Hobby {
             throw new ExpressError(`There exists no hobby '${id}`, 404);
         }
 
-        return job;
+        return hobby;
     }
 
     static async remove(id) {

@@ -7,11 +7,17 @@
     "default": {},
     "examples": [
         {
-            "activity": "read"
+            "activity": "play soccer",
+            "meet_address": "Sab Francisco, CA",
+            "lat": 37.76271616903525,
+            "lng": -122.4281591016166
         }
     ],
     "required": [
-        "activity"
+        "activity",
+        "meet_address",
+        "lat",
+        "lng"
     ],
     "properties": {
         "activity": {
@@ -21,7 +27,37 @@
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "read"
+                "play soccer"
+            ]
+        },
+        "meet_address": {
+            "$id": "#/properties/meet_address",
+            "type": "string",
+            "title": "The meet_address schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Sab Francisco, CA"
+            ]
+        },
+        "lat": {
+            "$id": "#/properties/lat",
+            "type": "number",
+            "title": "The lat schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                37.76271616903525
+            ]
+        },
+        "lng": {
+            "$id": "#/properties/lng",
+            "type": "number",
+            "title": "The lng schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                -122.4281591016166
             ]
         }
     },

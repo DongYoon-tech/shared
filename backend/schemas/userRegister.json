@@ -7,12 +7,13 @@
     "default": {},
     "examples": [
         {
-            "username": "User123123",
+            "username": "username",
             "password": "123password",
             "first_name": "John",
             "last_name": "Smith",
             "email": "user@gmail.com",
-            "hobbies": "video games"
+            "lat": -25.344,
+            "lng": 131.036
         }
     ],
     "required": [
@@ -20,7 +21,9 @@
         "password",
         "first_name",
         "last_name",
-        "email"
+        "email",
+        "lat",
+        "lng"
     ],
     "properties": {
         "username": {
@@ -30,7 +33,7 @@
             "description": "An explanation about the purpose of this instance.",
             "default": "",
             "examples": [
-                "User123123"
+                "username"
             ]
         },
         "password": {
@@ -74,14 +77,24 @@
                 "user@gmail.com"
             ]
         },
-        "hobbies": {
-            "$id": "#/properties/hobbies",
-            "type": "string",
-            "title": "The hobbies schema",
+        "lat": {
+            "$id": "#/properties/lat",
+            "type": "number",
+            "title": "The lat schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": "",
+            "default": 0.0,
             "examples": [
-                "video games"
+                -25.344
+            ]
+        },
+        "lng": {
+            "$id": "#/properties/lng",
+            "type": "number",
+            "title": "The lng schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                131.036
             ]
         }
     },
