@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital@0;1&family=Carattere&family=Ephesis&display=swap');
+
+.hobby-list{
+    border: solid black 5px;
+}
+.google-map{
+    border: solid black 5px;
+}
+.container-fluid{
+    margin-top: 15px;
+}
+.search-btn{
+   margin: 5px;
+   
+}
+
+.search-input{
+    margin: 5px;
+}
+
+.search-form{
+    position:relative;
+    display: flex;
+}
+
+.hobby-card{
+    margin: 15px;
+    
+}
+.left-container{
+   margin-left: 15%;
+   margin-right: 15%;
+}
+
+.user-hobbies{
+    text-align: center;
+    font-size: 25px;
+    font-family: 'Carattere', cursive;
+    font-size: 35px;
+    text-shadow: 1px 1px 2px skyblue;
+}
+
+.user-hobbies-container{
+    color: white;
+}
+
+.list{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list div{
+    margin-right: 15px;
+}
+
+
+.user-hobbies-container ul{
+    border: white 1px solid;
+    border-radius: 10px;
+    color:black;
+    background-color: white;
+    box-shadow: 2px 4px 8px skyblue;
+    position: relative;
+    top:0;
+    transition: top ease 0.5s;
+}
+
+.user-hobbies-container ul:hover{
+    top: 10px
+}
+
+.hobbies-list{
+    text-align: center;
+    font-size: 25px;
+    font-family: 'Carattere', cursive;
+    font-size: 35px;
+    text-shadow: 1px 1px 2px skyblue;
+}
+
+.hobbies-list-container{
+    color: white;
+}
+
+.hobbies-list-container ul{
+    border: white 1px solid;
+    border-radius: 10px;
+    color:black;
+    background-color: white;
+    box-shadow: 2px 4px 8px skyblue;  
+    position: relative;
+    top:0;
+    transition: top ease 0.5s;
+}
+
+.hobbies-list-container ul:hover{
+    top: 10px
+}
+
+.card-title{
+    text-align: center;
+    font-size: 25px;
+}
+
+

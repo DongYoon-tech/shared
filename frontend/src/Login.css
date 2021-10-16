@@ -1,0 +1,20 @@
+.Login-card{
+    margin-top: 25px;
+}
+
+.Login-card h1{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.Login-card label{
+    font-weight: bold;
+}
+
+.Login-container{
+    background-color: cadetblue;
+}
+
+button{
+    margin-top: 5px;
+}
