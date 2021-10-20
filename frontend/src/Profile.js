@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Form,
     FormGroup,
@@ -10,16 +10,15 @@ import {
     Container,
     Button
 } from "reactstrap";
+import { Link } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import SharedApi from "./Api";
 import { useHistory } from "react-router-dom";
 import "./Profile.css"
 
-const Profile = ({ currentUser, setCurrentUser }) => {
+const Profile = ({ currentUser, delHobby }) => {
     console.log("here", currentUser)
-
-
 
     const history = useHistory()
     const [formData, setFormData] = useState({
@@ -31,6 +30,18 @@ const Profile = ({ currentUser, setCurrentUser }) => {
         lat: 37.76271616903525,
         lng: -122.4281591016166
     })
+
+    // const [userData, setUserData] = useState({})
+
+    // useEffect(() => {
+    //     async function getUserHobbies() {
+    //         let userInfo = await SharedApi.getCurrentUser(currentUser.username)
+    //         setUserData(userInfo)
+    //         console.log("userInfo", userInfo)
+    //     }
+    //     // console.log("userData", userData)
+    //     getUserHobbies();
+    // }, [setUserData])
 
     const handleChange = e => {
         const { name, value } = e.target
@@ -54,17 +65,19 @@ const Profile = ({ currentUser, setCurrentUser }) => {
 
     }
 
-    const deleteHobby = async (id) => {
-        try {
-            let res = await SharedApi.deleteHobby(id)
-            console.log(id)
-
-        }
-        catch (e) {
-            console.log("error")
-        }
-        history.push("/profile")
-    }
+    // const deleteHobby = async (id) => {
+    //     try {
+    //         let res = await SharedApi.deleteHobby(id)
+    //         console.log(id)
+    //         console.log("userData+delete", userData)
+    //         let data = userData.hobbies.filter(h => h.id !== id)
+    //         console.log("data,", data)
+    //     }
+    //     catch (e) {
+    //         console.log("error")
+    //     }
+    //     history.push("/profile")
+    // }
 
     return (
         <div className="row">
@@ -120,20 +133,46 @@ const Profile = ({ currentUser, setCurrentUser }) => {
             <Container className="user-hobbies-container" fluid={true}>
                 <div className="col-6 offset-md-3">
                     <p className="user-hobbies" >{currentUser.username} Hobby List:</p>
-                    {currentUser.hobbies.map(hobby => (
+                    {currentUser.hobbies.length == 0
+                        ?
+                        <h3 className="no-hobbies">No Hobbies at the moment...</h3>
+                        :
+                        <>
+                            {currentUser.hobbies.map(hobby => (
+                                <ul key={hobby.id}>
+                                    <div className="user-activity">{hobby.activity}</div>
+                                    <div className="btn">
+                                        <Button outline color="success"><MdEdit /></Button>
+                                        <Button
+                                            outline color="danger"
+                                            onClick={() => delHobby(hobby.id)}
+                                        ><FaTrashAlt /></Button>
+                                    </div>
+                                </ul>
+                            ))}
+                        </>}
+                    {/* {currentUser.hobbies.map(hobby => (
                         <ul key={hobby.id}>
                             <div className="user-activity">{hobby.activity}</div>
                             <div className="btn">
                                 <Button outline color="success"><MdEdit /></Button>
                                 <Button
                                     outline color="danger"
-                                    onClick={() => deleteHobby(hobby.id)}
+                                    onClick={() => delHobby(hobby.id)}
                                 ><FaTrashAlt /></Button>
                             </div>
                         </ul>
-                    ))}
+                    ))} */}
                 </div>
             </Container>
+            <div className="go-back-btn">
+                <Link id="hobbies-btn" to="/hobbies">
+                    Go Back To Hobbies
+                </Link>
+            </div>
+            {/* <Button color="primary">
+                Go Back
+            </Button> */}
         </div>
     )
 }

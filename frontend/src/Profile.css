@@ -54,10 +54,6 @@ h1{
     color: white;
     text-shadow: 1px 1px 3px black;
 }
-/* 
-.btn,.Button{
- background-color: none;
-} */
 
 .user-hobbies-container ul:hover{
     top: 10px
@@ -65,4 +61,22 @@ h1{
 
 .Profile-container{
     margin:0;
+}
+
+.go-back-btn{
+    display: flex;
+    justify-content: center;
+}
+
+#hobbies-btn{
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: #0275d8;
+    color: white;
+    margin-top: 40px;
+    padding: 10px;
+}
+
+.no-hobbies{
+    margin-top: 15px;
 }

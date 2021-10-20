@@ -28,7 +28,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import "./Hobbies.css"
 
-const Hobbies = ({ currentUser }) => {
+const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
 
     const INITIAL_STATE = {
         lat: 0,
@@ -54,22 +54,22 @@ const Hobbies = ({ currentUser }) => {
     const [searchCoord, setSearchCoord] = useState(INITIAL_STATE)
 
     // get hobbies -- added
-    const [hobbyList, setHobbyList] = useState([])
+    // const [hobbyList, setHobbyList] = useState([])
     const [hobbyLocations, setHobbyLocations] = useState([])
 
     Geocode.setApiKey(Apikey);
 
-    useEffect(() => {
-        async function getAllHobbies() {
-            let hobby = await SharedApi.getAllHobby();
-            setHobbyList(hobby)
+    // useEffect(() => {
+    //     async function getAllHobbies() {
+    //         let hobby = await SharedApi.getAllHobby();
+    //         setHobbyList(hobby)
 
-            console.log("hobby", hobby)
-            console.log("hobbyLocations", hobbyLocations)
-        }
-        getAllHobbies();
-        // think if it needs change instead of meetCoord
-    }, [meetCoord])
+    //         console.log("hobby", hobby)
+    //         console.log("hobbyLocations", hobbyLocations)
+    //     }
+    //     getAllHobbies();
+
+    // }, [meetCoord])
 
     // Current location pop up
     useEffect(() => {
@@ -82,13 +82,17 @@ const Hobbies = ({ currentUser }) => {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     })
+                    setSearchCoord({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    })
                     console.log("Latitude is :", position.coords.latitude);
                     console.log("Longitude is :", position.coords.longitude);
                 })
             } else {
                 console.log("Geolocation is not supported by this browser.");
             }
-            console.log(coordData);
+            console.log("coordData", coordData);
         }
         getCurrentLocation()
     }, [])
@@ -131,8 +135,8 @@ const Hobbies = ({ currentUser }) => {
         }
 
         console.log("data", data)
-
-        let res = await SharedApi.createHobby(data)
+        addHobby(data)
+        // let res = await SharedApi.createHobby(data)
 
         console.log("meet", meet)
         setMeet(Initial_State_Meet)
@@ -221,16 +225,16 @@ const Hobbies = ({ currentUser }) => {
                                     {hobbyList.map(h => (
                                         <ul>
                                             {
-                                                h.user_username == currentUser.username
+                                                h.user_username != currentUser.username
                                                     ?
+                                                    <div>{h.activity}</div>
+                                                    :
                                                     <div className="list">
                                                         {h.activity}
                                                         <div>
                                                             <FaUserAlt />{h.user_username}
                                                         </div>
                                                     </div>
-                                                    :
-                                                    <div>{h.activity}</div>
                                             }
                                         </ul>
                                     ))}

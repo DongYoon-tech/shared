@@ -12,7 +12,7 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
     const [click, setClick] = useState(false)
     const [selectedPlace, setSelectedPlace] = useState(null)
     const [markerMap, setMarkerMap] = useState({});
-    // Put API in env file
+
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: Apikey
     })
@@ -45,15 +45,16 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
         });
     }
 
-    const handleClick = (e, h) => {
+    const handleClick = (e, place) => {
         console.log("e", e)
-        setSelectedPlace(h)
+        setSelectedPlace(place)
 
         if (click) {
             setClick(false)
         }
         setClick(true)
-        console.log("h", h)
+        console.log("h", place)
+        console.log("markerMap", markerMap)
 
     }
 
@@ -83,7 +84,7 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
                         onCloseClick={() => setClick(false)}
                     >
                         <div className="message">
-                            <p className="username"> <ImUser /> {currentUser.username}</p>
+                            <p className="username"> <ImUser /> {selectedPlace.user_username}</p>
                             <p className="hobby"> <IoMdPeople /> {selectedPlace.activity}</p>
                         </div>
                     </InfoWindow>
