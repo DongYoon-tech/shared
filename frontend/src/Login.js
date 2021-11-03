@@ -32,7 +32,6 @@ const Login = ({ login }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // add after creating the database in the backend
         let res = await login(formData)
 
         if (res.success) {

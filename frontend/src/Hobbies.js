@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Map from './GoogleMap'
 import Geocode from "react-geocode";
 import { Grid } from '@material-ui/core'
-import SearchIcon from '@mui/icons-material/Search';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import {
     CardTitle,
     Button,
@@ -29,6 +25,8 @@ import { FaUserAlt } from "react-icons/fa";
 import "./Hobbies.css"
 
 const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
+
+    console.log("Hobbies Currentuser", currentUser)
 
     const INITIAL_STATE = {
         lat: 0,
@@ -59,22 +57,9 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
 
     Geocode.setApiKey(Apikey);
 
-    // useEffect(() => {
-    //     async function getAllHobbies() {
-    //         let hobby = await SharedApi.getAllHobby();
-    //         setHobbyList(hobby)
-
-    //         console.log("hobby", hobby)
-    //         console.log("hobbyLocations", hobbyLocations)
-    //     }
-    //     getAllHobbies();
-
-    // }, [meetCoord])
-
     // Current location pop up
     useEffect(() => {
         async function getCurrentLocation() {
-            // e.preventDefault();
             if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(function (position) {
@@ -86,13 +71,11 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     })
-                    console.log("Latitude is :", position.coords.latitude);
-                    console.log("Longitude is :", position.coords.longitude);
                 })
             } else {
                 console.log("Geolocation is not supported by this browser.");
             }
-            console.log("coordData", coordData);
+
         }
         getCurrentLocation()
     }, [])
@@ -116,14 +99,9 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         console.log("handleSubmit", meet.address);
-        //review the coordinates are wrong when adding
         let response = await Geocode.fromAddress(meet.address)
         let responseCoord = response.results[0].geometry.location;
-        // console.log("lat", lat)
-        // console.log("lng", lng)
-        console.log("response", responseCoord)
         setMeetCoord(responseCoord)
 
         let data = {
@@ -134,35 +112,27 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
             "lng": responseCoord.lng
         }
 
-        console.log("data", data)
         addHobby(data)
-        // let res = await SharedApi.createHobby(data)
-
-        console.log("meet", meet)
         setMeet(Initial_State_Meet)
-        // setMeetCoord(INITIAL_STATE)
 
     }
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        console.log("handlesearch", e)
         Geocode.fromAddress(searchLocation.address).then(
             (res) => {
                 const { lat, lng } = res.results[0].geometry.location;
-                console.log("search coord", lat, lng)
                 setSearchCoord({
                     lat: lat,
                     lng: lng
                 })
-                console.log("setSearchCoord", lat, lng)
-                // console.log("setSearchCoord")
+
             },
             (err) => {
                 console.error(err)
             }
         )
-        console.log("searchLocation", searchLocation)
+
         setSearchLocation(Initial_State_Search)
     }
 
@@ -176,6 +146,7 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                         type="text"
                         name="address"
                         className="search-input"
+                        placeholder="Los Angeles, CA"
                         value={searchLocation.address}
                         onChange={handleChangeSearch}
                     />
@@ -184,15 +155,12 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
             </Container>
 
             <Grid container spacing={2} style={{ width: '100%' }}>
-                {/* <Grid item xs={12} md={4}> */}
                 <Grid item xs={4}>
-
                     {currentUser
                         ?
                         <div className="left-container">
                             <Card className="hobby-card">
                                 <CardBody>
-                                    {/* <CardTitle className="card-title">Add Hobby/Location</CardTitle> */}
                                     <Form onSubmit={handleSubmit}>
                                         <FormGroup>
                                             <Label>Hobby:</Label>
@@ -200,6 +168,7 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                                                 id="hobbies"
                                                 type="text"
                                                 name="hobbies"
+                                                placeholder="Listen To Music..."
                                                 value={meet.hobbies}
                                                 onChange={handleChange}
 
@@ -209,6 +178,7 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                                                 id="address"
                                                 type="text"
                                                 name="address"
+                                                placeholder="123 Street, CA, 12345"
                                                 value={meet.address}
                                                 onChange={handleChange}
                                             />
@@ -223,13 +193,13 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                                 <p className="hobbies-list">Hobbies List</p>
                                 <>
                                     {hobbyList.map(h => (
-                                        <ul>
+                                        <ul key={h.id}>
                                             {
                                                 h.user_username != currentUser.username
                                                     ?
-                                                    <div>{h.activity}</div>
+                                                    <div >{h.activity}</div>
                                                     :
-                                                    <div className="list">
+                                                    <div className="list" >
                                                         {h.activity}
                                                         <div>
                                                             <FaUserAlt />{h.user_username}
@@ -246,14 +216,12 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                         </>
                     }
                 </Grid>
-                {/* <Grid item xs={12} md={8}> */}
                 <Grid item xs={8} container
                     direction="row" justifyContent="center"
                     alignItems="center"
                 >
                     <Map
                         coordData={coordData}
-                        // meetCoord changed to searchCoord
                         searchCoord={searchCoord}
                         hobbyList={hobbyList}
                         currentUser={currentUser}

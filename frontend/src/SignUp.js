@@ -45,8 +45,7 @@ const SignUp = ({ signup }) => {
         else {
             console.log(res.errors)
         }
-        // history.push('/')
-        // console.log(formData)
+
     }
 
     return (
@@ -102,15 +101,6 @@ const SignUp = ({ signup }) => {
                                     onChange={handleChange}
                                 />
                             </FormGroup>
-                            {/* <FormGroup>
-                                <Label>Hobbies:</Label>
-                                <Input
-                                    type="text"
-                                    name="hobbies"
-                                    value={formData.hobbies}
-                                    onChange={handleChange}
-                                />
-                            </FormGroup> */}
                             <Button color="primary">Submit</Button>
                         </Form>
                     </CardBody>

@@ -9,7 +9,7 @@ class SharedApi {
         console.debug("API Call:", endpoint, data, method);
 
         const url = `${BASE_API_URL}/${endpoint}`;
-        const headers = { _token: `${SharedApi.token}` };
+        const headers = { Authorization: `Bearer ${SharedApi.token}` };
         const params = (method === "get")
             ? data
             : {};
@@ -54,8 +54,13 @@ class SharedApi {
     }
 
     static async deleteHobby(id) {
-        let res = await axios.delete(`${BASE_API_URL}/hobbies/${id}`)
+        let res = await this.request(`hobbies/${id}`, {}, "delete")
         return res
+    }
+
+    static async saveProfile(username, data) {
+        let res = await this.request(`users/${username}`, data, "patch");
+        return res.user;
     }
 
 }

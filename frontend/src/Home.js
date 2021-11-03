@@ -6,13 +6,15 @@ import "./Home.css"
 function Home({ currentUser }) {
     return (
         <section className="home">
-            {currentUser
-                ?
-                <Link className="get-started" to="/hobbies">Go To Hobbies</Link>
-                :
-                <></>
-            }
-
+            <div>
+                <h1 className="welcome-user">Welcome {currentUser.username}!</h1>
+                {currentUser
+                    ?
+                    <Link className="get-started" to="/hobbies">Go To Hobbies</Link>
+                    :
+                    <></>
+                }
+            </div>
         </section>
     );
 }

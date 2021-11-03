@@ -8,7 +8,6 @@ function NavBar({ LogOut, currentUser }) {
         <nav>
 
             <Link id="logo" to="/">
-
                 {'< '}Shared{" >"}
             </Link>
             <div className="left-button">

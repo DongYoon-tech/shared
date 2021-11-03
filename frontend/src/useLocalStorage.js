@@ -6,6 +6,7 @@ function useLocalStorage(key, firstValue = null) {
     const [item, setItem] = useState(initialValue);
 
     useEffect(function setKeyInLocalStorage() {
+
         console.debug("hooks useLocalStorage useEffect", "item=", item);
 
         if (item === null) {

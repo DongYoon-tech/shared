@@ -34,27 +34,19 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
         searchCoord.lng = LAcoord.lng
     }
 
-    console.log("inside", coordData)
-    console.log("inside meetcoord", searchCoord)
-
     const markerLoadHandler = (marker, h) => {
-        console.log("marker", marker)
         return setMarkerMap(prevState => {
-            console.log("[h.id]: marker", [h.id], marker)
             return { ...prevState, [h.id]: marker };
         });
     }
 
     const handleClick = (e, place) => {
-        console.log("e", e)
         setSelectedPlace(place)
 
         if (click) {
             setClick(false)
         }
         setClick(true)
-        console.log("h", place)
-        console.log("markerMap", markerMap)
 
     }
 
@@ -67,17 +59,17 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
                 center={searchCoord}
             >
                 {hobbyList.map(h => (
-                    <>
-                        <Marker
-                            key={h.id}
-                            position={{
-                                lat: h.lat,
-                                lng: h.lng
-                            }}
-                            onLoad={marker => markerLoadHandler(marker, h)}
-                            onClick={e => handleClick(e, h)}
-                        />
-                    </>))}
+
+                    <Marker
+                        key={h.id}
+                        position={{
+                            lat: h.lat,
+                            lng: h.lng
+                        }}
+                        onLoad={marker => markerLoadHandler(marker, h)}
+                        onClick={e => handleClick(e, h)}
+                    />
+                ))}
                 {click && selectedPlace && (
                     <InfoWindow
                         anchor={markerMap[selectedPlace.id]}

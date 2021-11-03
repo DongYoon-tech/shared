@@ -10,15 +10,17 @@ import {
     Container,
     Button
 } from "reactstrap";
+import jwt from "jsonwebtoken";
 import { Link } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import SharedApi from "./Api";
 import { useHistory } from "react-router-dom";
+import useLocalStorage from "./useLocalStorage";
+import UserContext from "./UserContext";
 import "./Profile.css"
 
-const Profile = ({ currentUser, delHobby }) => {
-    console.log("here", currentUser)
+const Profile = ({ currentUser, setCurrentUser, delHobby, editHobby, hobbyList }) => {
 
     const history = useHistory()
     const [formData, setFormData] = useState({
@@ -27,21 +29,9 @@ const Profile = ({ currentUser, delHobby }) => {
         first_name: currentUser.first_name,
         last_name: currentUser.last_name,
         email: currentUser.email,
-        lat: 37.76271616903525,
-        lng: -122.4281591016166
+        lat: currentUser.lat,
+        lng: currentUser.lng
     })
-
-    // const [userData, setUserData] = useState({})
-
-    // useEffect(() => {
-    //     async function getUserHobbies() {
-    //         let userInfo = await SharedApi.getCurrentUser(currentUser.username)
-    //         setUserData(userInfo)
-    //         console.log("userInfo", userInfo)
-    //     }
-    //     // console.log("userData", userData)
-    //     getUserHobbies();
-    // }, [setUserData])
 
     const handleChange = e => {
         const { name, value } = e.target
@@ -58,121 +48,114 @@ const Profile = ({ currentUser, delHobby }) => {
             first_name: formData.first_name,
             last_name: formData.last_name,
             email: formData.email,
-            password: formData.password
+            password: formData.password,
+            lat: formData.lat,
+            lng: formData.lng,
         }
 
         let username = formData.username;
+        let updatedUser;
+
+        try {
+            updatedUser = await SharedApi.saveProfile(username, profileData);
+
+        } catch (errors) {
+            console.log("Error")
+            return;
+        }
+
+        setFormData(data => ({ ...data, password: "" }));
+        let hobbiesAdded = { ...updatedUser, hobbies: [...currentUser.hobbies] }
+        setCurrentUser(hobbiesAdded);
 
     }
 
-    // const deleteHobby = async (id) => {
-    //     try {
-    //         let res = await SharedApi.deleteHobby(id)
-    //         console.log(id)
-    //         console.log("userData+delete", userData)
-    //         let data = userData.hobbies.filter(h => h.id !== id)
-    //         console.log("data,", data)
-    //     }
-    //     catch (e) {
-    //         console.log("error")
-    //     }
-    //     history.push("/profile")
-    // }
-
     return (
-        <div className="row">
-            <Container className="Profile-container">
-                <div className="col-6 offset-md-3">
-                    <Card className="Profile-card">
-                        <h1>{currentUser.username}</h1>
-                        <CardBody>
-                            <Form onSubmit={handleSubmit}>
+        <div >
+            <div className="row">
+                <Container className="Profile-container">
+                    <div className="col-6 offset-md-4">
+                        <Card className="Profile-card">
+                            <h1>{currentUser.username}</h1>
+                            <CardBody>
+                                <Form onSubmit={handleSubmit}>
 
-                                <FormGroup>
-                                    <Label>First Name:</Label>
-                                    <Input
-                                        type="text"
-                                        name="first_name"
-                                        value={formData.first_name}
-                                        onChange={handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Last Name:</Label>
-                                    <Input
-                                        type="text"
-                                        name="last_name"
-                                        value={formData.last_name}
-                                        onChange={handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Email:</Label>
-                                    <Input
-                                        type="text"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Password:</Label>
+                                    <FormGroup>
+                                        <Label>First Name:</Label>
+                                        <Input
+                                            type="text"
+                                            name="first_name"
+                                            value={formData.first_name}
+                                            onChange={handleChange}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Last Name:</Label>
+                                        <Input
+                                            type="text"
+                                            name="last_name"
+                                            value={formData.last_name}
+                                            onChange={handleChange}
+                                        />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Email:</Label>
+                                        <Input
+                                            type="text"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                        />
+                                    </FormGroup>
+                                    {/* <FormGroup>
+                                    <Label>Confirm password to make changes:</Label>
                                     <Input
                                         type="password"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
                                     />
-                                </FormGroup>
-                                <Button color="primary">Save Changes</Button>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                </div>
-            </Container>
-            <Container className="user-hobbies-container" fluid={true}>
-                <div className="col-6 offset-md-3">
-                    <p className="user-hobbies" >{currentUser.username} Hobby List:</p>
-                    {currentUser.hobbies.length == 0
-                        ?
-                        <h3 className="no-hobbies">No Hobbies at the moment...</h3>
-                        :
-                        <>
-                            {currentUser.hobbies.map(hobby => (
-                                <ul key={hobby.id}>
-                                    <div className="user-activity">{hobby.activity}</div>
-                                    <div className="btn">
-                                        <Button outline color="success"><MdEdit /></Button>
-                                        <Button
-                                            outline color="danger"
-                                            onClick={() => delHobby(hobby.id)}
-                                        ><FaTrashAlt /></Button>
-                                    </div>
-                                </ul>
-                            ))}
-                        </>}
-                    {/* {currentUser.hobbies.map(hobby => (
-                        <ul key={hobby.id}>
-                            <div className="user-activity">{hobby.activity}</div>
-                            <div className="btn">
-                                <Button outline color="success"><MdEdit /></Button>
-                                <Button
-                                    outline color="danger"
-                                    onClick={() => delHobby(hobby.id)}
-                                ><FaTrashAlt /></Button>
-                            </div>
-                        </ul>
-                    ))} */}
-                </div>
-            </Container>
+                                </FormGroup> */}
+                                    <Button color="primary">Save Changes</Button>
+                                </Form>
+                            </CardBody>
+                        </Card>
+                    </div>
+                </Container>
+                <Container className="user-hobbies-container" fluid={true}>
+                    <div className="col-6 offset-md-3">
+                        <p className="user-hobbies" >{currentUser.username} Hobby List:</p>
+                        {currentUser.hobbies.length == 0
+                            ?
+                            <h3 className="no-hobbies">No Hobbies at the moment...</h3>
+                            :
+                            <>
+                                {currentUser.hobbies.map(hobby => (
+                                    <ul key={hobby.id}>
+                                        <div className="user-activity">{hobby.activity}</div>
+                                        <div className="btn">
+                                            {/* <Button
+                                            outline color="success"
+                                            onClick={() => editHobby(hobby.id)}
+                                        >
+                                            <MdEdit />
+                                        </Button> */}
+                                            <Button
+                                                outline color="danger"
+                                                onClick={() => delHobby(hobby.id)}
+                                            ><FaTrashAlt /></Button>
+                                        </div>
+                                    </ul>
+                                ))}
+                            </>}
+                    </div>
+                </Container>
+            </div>
             <div className="go-back-btn">
                 <Link id="hobbies-btn" to="/hobbies">
                     Go Back To Hobbies
                 </Link>
             </div>
-            {/* <Button color="primary">
-                Go Back
-            </Button> */}
         </div>
     )
 }

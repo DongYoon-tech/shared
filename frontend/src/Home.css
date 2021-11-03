@@ -1,28 +1,31 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital@0;1&family=Carattere&family=Ephesis&display=swap');
 
 .home{
-    /* background-color: rgb(83, 181, 247); */
-    /* height: 100%; */
-    /* width:100%; */
-    position: relative;
-    /* margin:0; */
-    padding:0;
-    /* border-radius: 20px; */
-    margin-left: 50px;
-    margin-right: 50px;
-    /* margin-bottom:150px */
-    /* margin:0 */
-    /* background-color: cadetblue; */
-    text-align: center;
-    margin-top: 35vh;
+    height: 40em;
+    position: relative
+}
+
+.welcome-user{
+    margin:0;
+    position:absolute;
+    top: 40%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Carattere', cursive;
+    font-size: 80px;
+    text-shadow: 1px 1px 2px black;
+    color:white;
+    font-weight: bold;
 }
 
 .get-started{
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 47%;
-    /* right: 50%; */
+    margin:0;
+    position:absolute;
+    top: 55%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
     border: none;
     padding: 15px;
     border-radius: 15px;
@@ -38,13 +41,7 @@
 }
 
 #bg-video{
-    /* background-color: cadetblue; */
-    /* border-top-left-radius: 50px;
-    border-top-right-radius: 50px; */
     border-radius:50px;
-    /* position: absolute; */
-    /* top: 50%;
-    left: 50%; */
     height:100%;
     width:100%;
     -o-object-fit: cover;
@@ -52,6 +49,5 @@
     opacity: 0.9;
     margin-top:15px;
     padding:0px;
-    /* padding:-20px; */
     
 }
