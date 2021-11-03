@@ -18,12 +18,3 @@ CREATE TABLE hobbies (
   lng FLOAT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Address for meetup location
-
--- CREATE TABLE address (
---   id SERIAL PRIMARY KEY,
---   meet_address TEXT,
---   hobbies_id INTEGER REFERENCES hobbies (id) ON DELETE CASCADE,
---   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );

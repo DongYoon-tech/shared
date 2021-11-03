@@ -1,6 +1,5 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
-// const partialUpdate = require("../helpers/partialUpdate");
 const ExpressError = require("../helpers/ExpressError");
 
 const BCRYPT_WORK_FACTOR = 10;
@@ -101,15 +100,13 @@ class User {
             WHERE h.user_username = $1`, [username]
         )
 
-        // console.log("userHobbiesRes", userHobbiesRes.rows)
-
         user.hobbies = userHobbiesRes.rows.map(h => (
             {
                 id: h.id,
                 activity: h.activity
             }
         ))
-        // console.log("userHobbies", user.hobbies)
+
         // const userJobsRes = await db.query(
         //   `SELECT j.title, j.company_handle, a.state 
         //     FROM applications AS a

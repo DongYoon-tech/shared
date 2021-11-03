@@ -7,14 +7,11 @@ const ExpressError = require("../helpers/ExpressError");
 function authRequired(req, res, next) {
 
     try {
-
         const authHeader = req.headers && req.headers.authorization;
         if (authHeader) {
             const token = authHeader.replace(/^[Bb]earer /, "").trim();
             res.locals.user = jwt.verify(token, SECRET_KEY);
-            console.log("res------------------", res.locals.user)
         }
-
 
         return next();
     } catch (err) {
@@ -25,7 +22,6 @@ function authRequired(req, res, next) {
 function ensureCorrectUser(req, res, next) {
     try {
         const user = res.locals.user;
-        console.log("user", user)
         if (!(user && (user.username === req.params.username))) {
             throw new ExpressError("Unauthorized", 401)
         }

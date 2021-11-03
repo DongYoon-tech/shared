@@ -11,8 +11,6 @@ class Address {
         return result.rows
     }
 
-    // may need to change the hobbiesRes
-    // instead of requesting from the address request from hobbies
     static async findOne(id) {
         const addressRes = await db.query(
             `SELECT id, meet_address, hobbies_id, created_at
@@ -87,25 +85,6 @@ class Address {
             throw new ExpressError(`There exists no address '${id}`, 404);
         }
     }
-
-    // static async apply(id, username, state) {
-    //     const result = await db.query(
-    //         `SELECT id 
-    //     FROM jobs 
-    //     WHERE id = $1`,
-    //         [id]
-    //     );
-
-    //     if (result.rows.length === 0) {
-    //         throw ExpressError(`There exists no job '${id}`, 404);
-    //     }
-
-    //     await db.query(
-    //         `INSERT INTO applications (job_id, username, state)
-    //     VALUES ($1, $2, $3)`,
-    //         [id, username, state]
-    //     );
-    // }
 }
 
 module.exports = Address;

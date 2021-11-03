@@ -52,7 +52,6 @@ router.post('/', async function (req, res, next) {
 });
 
 /** PATCH /[handle] {userData} => {user: updatedUser} */
-// removed ensureCorrectUser,
 router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
     try {
         if ('username' in req.body) {
