@@ -13,7 +13,8 @@ class Hobby {
             user_username,
             lat,
             lng
-        FROM hobbies`
+        FROM hobbies
+        ORDER BY id`
         )
         return result.rows
     }

@@ -11,8 +11,8 @@ const addressUpdateSchema = require("../schemas/addressUpdate.json");
 
 const router = express.Router({ mergeParams: true });
 
-
-router.get('/', authRequired, async function (req, res, next) {
+// authrequired removed
+router.get('/', async function (req, res, next) {
     try {
         const addresses = await Address.findAll(req.query);
         return res.json({ addresses });
@@ -21,7 +21,8 @@ router.get('/', authRequired, async function (req, res, next) {
     }
 });
 
-router.get('/:id', authRequired, async function (req, res, next) {
+// authrequired removed
+router.get('/:id', async function (req, res, next) {
     try {
         const address = await Address.findOne(req.params.id);
         return res.json({ address });

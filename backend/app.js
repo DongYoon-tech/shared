@@ -1,8 +1,11 @@
+"use strict";
+
 const express = require('express');
 const cors = require("cors");
 
 const ExpressError = require('./helpers/ExpressError');
 
+const { authRequired } = require("./middleware/auth");
 const usersRoutes = require('./routes/users');
 const hobbiesRoutes = require('./routes/hobbies');
 const addressesRoutes = require('./routes/addresses');
@@ -15,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(authRequired);
 
 app.use('/addresses', addressesRoutes);
 app.use('/hobbies', hobbiesRoutes);

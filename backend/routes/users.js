@@ -13,7 +13,7 @@ const router = express.Router();
 
 /** GET / => {users: [user, ...]} */
 // authRequired
-router.get('/', authRequired, async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     try {
         const users = await User.findAll();
         return res.json({ users });
@@ -24,7 +24,7 @@ router.get('/', authRequired, async function (req, res, next) {
 
 /** GET /[username] => {user: user} */
 
-router.get('/:username', authRequired, async function (req, res, next) {
+router.get('/:username', async function (req, res, next) {
     try {
         const user = await User.findOne(req.params.username);
         return res.json({ user });
@@ -52,7 +52,7 @@ router.post('/', async function (req, res, next) {
 });
 
 /** PATCH /[handle] {userData} => {user: updatedUser} */
-
+// removed ensureCorrectUser,
 router.patch('/:username', ensureCorrectUser, async function (req, res, next) {
     try {
         if ('username' in req.body) {

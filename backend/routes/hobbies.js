@@ -10,7 +10,7 @@ const hobbyUpdateSchema = require("../schemas/hobbyUpdate.json");
 const router = express.Router({ mergeParams: true });
 
 
-router.get('/', authRequired, async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     try {
         const hobbies = await Hobby.findAll(req.query);
         return res.json({ hobbies });
@@ -19,7 +19,7 @@ router.get('/', authRequired, async function (req, res, next) {
     }
 });
 
-router.get('/:id', authRequired, async function (req, res, next) {
+router.get('/:id', async function (req, res, next) {
     try {
         const hobby = await Hobby.findOne(req.params.id);
         return res.json({ hobby });

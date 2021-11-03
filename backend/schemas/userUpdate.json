@@ -7,7 +7,6 @@
     "default": {},
     "examples": [
         {
-            "username": "username",
             "password": "123password",
             "first_name": "John",
             "last_name": "Smith",

@@ -101,7 +101,7 @@ class User {
             WHERE h.user_username = $1`, [username]
         )
 
-        console.log("userHobbiesRes", userHobbiesRes.rows)
+        // console.log("userHobbiesRes", userHobbiesRes.rows)
 
         user.hobbies = userHobbiesRes.rows.map(h => (
             {
@@ -109,7 +109,7 @@ class User {
                 activity: h.activity
             }
         ))
-        console.log("userHobbies", user.hobbies)
+        // console.log("userHobbies", user.hobbies)
         // const userJobsRes = await db.query(
         //   `SELECT j.title, j.company_handle, a.state 
         //     FROM applications AS a
@@ -127,33 +127,21 @@ class User {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
 
-
-        // let { query, values } = partialUpdate("users", data, "username", username);
-
-        // const result = await db.query(query, values);
-        // const user = result.rows[0];
-
-        // if (!user) {
-        //     throw new ExpressError(`There exists no user '${username}'`, 404);
-        // }
-
-        // delete user.password;
-        // delete user.is_admin;
-
         const res = await db.query(`
                         UPDATE users
-                        SET (password = $1, 
+                        SET password = $1, 
                             first_name = $2, 
                             last_name = $3, 
                             email = $4, 
                             lat = $5, 
-                            lng = $6)
+                            lng = $6
                         WHERE username = $7
                         RETURNING username,
                         first_name, 
                         last_name, 
                         email, 
-                        hobbies`,
+                        lat,
+                        lng`,
             [data.password,
             data.first_name,
             data.last_name,
