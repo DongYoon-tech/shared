@@ -202,7 +202,7 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                                                     <div className="list" >
                                                         {h.activity}
                                                         <div>
-                                                            <FaUserAlt />{h.user_username}
+                                                            <FaUserAlt /> {h.user_username}
                                                         </div>
                                                     </div>
                                             }
