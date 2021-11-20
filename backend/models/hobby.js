@@ -44,15 +44,7 @@ class Hobby {
             [hobby.user_username]
         );
 
-        // const addressRes = await db.query(
-        //     `SELECT id, meet_address, hobbies_id 
-        // FROM address
-        // WHERE hobbies_id = $1`,
-        //     [hobby.id]
-        // );
-
         hobby.userList = usersRes.rows[0];
-        // hobby.addressList = addressRes.rows[0];
 
         return hobby;
     }

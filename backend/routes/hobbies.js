@@ -70,15 +70,5 @@ router.delete('/:id', async function (req, res, next) {
     }
 });
 
-// router.post('/:id/apply', authRequired, async function(req, res, next) {
-//   try {
-//     const state = req.body.state || 'applied';
-//     await Job.apply(req.params.id, res.locals.username, state);
-//     return res.json({ message: state });
-//   } catch (err) {
-//     return next(err);
-//   }
-// });
-
 
 module.exports = router;
