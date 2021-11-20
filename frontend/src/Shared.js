@@ -63,20 +63,6 @@ function Shared() {
         setHobbyList(dataHobbies)
     }
 
-    const editHobby = async (id) => {
-        console.log("editHobby", id)
-        // let res = await SharedApi.deleteHobby(id);
-        // console.log('res +', res)
-        // console.log('currentUser -', currentUser)
-        // let data = currentUser.hobbies.filter(h => h.id !== id)
-        // let dataHobbies = hobbyList.filter(h => h.id !== id)
-        // // currentUser.hobbies = data
-        // setUserData(currentUser.hobbies = data)
-        // setHobbyList(dataHobbies)
-        // console.log("userData", userData)
-        // console.log("data,", data)
-    }
-
     const signup = async (data) => {
         try {
             let signupToken = await SharedApi.signup(data);
@@ -137,7 +123,6 @@ function Shared() {
                             currentUser={currentUser}
                             setCurrentUser={setCurrentUser}
                             delHobby={delHobby}
-                            editHobby={editHobby}
                             setUserData={setUserData}
                             userData={userData}
                             hobbyList={hobbyList}

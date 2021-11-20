@@ -27,10 +27,10 @@
     margin: 15px;
     
 }
-.left-container{
+/* .left-container{
    margin-left: 15%;
    margin-right: 15%;
-}
+} */
 
 .user-hobbies{
     text-align: center;
@@ -101,4 +101,12 @@
     font-size: 25px;
 }
 
+/* adding grid */
+.grid-container{
+    display: grid;
+    grid-template-columns: 40% auto;
+}
 
+.hobby-section{
+    padding:25px;
+}

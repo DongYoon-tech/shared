@@ -14,8 +14,7 @@ import {
     FormGroup,
     Label,
     Card,
-    CardBody,
-    InputGroupAddon
+    CardBody
 } from "reactstrap";
 
 import SharedApi from './Api';
@@ -52,7 +51,6 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
     const [searchCoord, setSearchCoord] = useState(INITIAL_STATE)
 
     // get hobbies -- added
-    // const [hobbyList, setHobbyList] = useState([])
     const [hobbyLocations, setHobbyLocations] = useState([])
 
     Geocode.setApiKey(Apikey);
@@ -154,8 +152,8 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                 </Form>
             </Container>
 
-            <Grid container spacing={2} style={{ width: '100%' }}>
-                <Grid item xs={4}>
+            <div className="grid-container">
+                <div className="hobby-section">
                     {currentUser
                         ?
                         <div className="left-container">
@@ -215,19 +213,17 @@ const Hobbies = ({ currentUser, hobbyList, addHobby }) => {
                         <>
                         </>
                     }
-                </Grid>
-                <Grid item xs={8} container
-                    direction="row" justifyContent="center"
-                    alignItems="center"
-                >
+                </div>
+                <div className="google-map-section">
                     <Map
                         coordData={coordData}
                         searchCoord={searchCoord}
                         hobbyList={hobbyList}
                         currentUser={currentUser}
                     />
-                </Grid>
-            </Grid>
+                </div>
+
+            </div>
         </div >
     )
 }

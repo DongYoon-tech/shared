@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-// import { Map, GoogleApiWrapper } from 'google-maps-react';
 import { GoogleMap, InfoWindow, Marker, useLoadScript } from "@react-google-maps/api"
 import GoogleMapReact from 'google-map-react'
 import "./GoogleMap.css"
@@ -53,8 +52,7 @@ const Map = ({ coordData, searchCoord, hobbyList, currentUser }) => {
     return (
         <>
             <GoogleMap
-                // change the style and export from css
-                mapContainerStyle={{ width: "50vw", height: "85vh" }}
+                mapContainerStyle={{ width: "100%", height: "100%" }}
                 zoom={14}
                 center={searchCoord}
             >

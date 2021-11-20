@@ -20,8 +20,6 @@ const SignUp = ({ signup }) => {
         first_name: '',
         last_name: '',
         email: '',
-        //change to array so the user can add/edit/delete
-        // get the lat and lng from current location (SF default)
         lat: 37.76271616903525,
         lng: -122.4281591016166
     }

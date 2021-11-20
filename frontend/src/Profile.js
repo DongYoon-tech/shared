@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
     Form,
     FormGroup,
@@ -10,19 +10,16 @@ import {
     Container,
     Button
 } from "reactstrap";
-import jwt from "jsonwebtoken";
 import { Link } from 'react-router-dom';
-import { MdEdit } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
 import SharedApi from "./Api";
 import { useHistory } from "react-router-dom";
-import useLocalStorage from "./useLocalStorage";
-import UserContext from "./UserContext";
 import "./Profile.css"
 
 const Profile = ({ currentUser, setCurrentUser, delHobby, editHobby, hobbyList }) => {
 
     const history = useHistory()
+    const [saved, setSaved] = useState(false)
     const [formData, setFormData] = useState({
         username: currentUser.username,
         password: '',
@@ -67,89 +64,78 @@ const Profile = ({ currentUser, setCurrentUser, delHobby, editHobby, hobbyList }
         setFormData(data => ({ ...data, password: "" }));
         let hobbiesAdded = { ...updatedUser, hobbies: [...currentUser.hobbies] }
         setCurrentUser(hobbiesAdded);
+        setSaved(true)
 
     }
 
     return (
         <div >
-            <div className="row">
+            <div className="user-info">
                 <Container className="Profile-container">
-                    <div className="col-6 offset-md-4">
-                        <Card className="Profile-card">
-                            <h1>{currentUser.username}</h1>
-                            <CardBody>
-                                <Form onSubmit={handleSubmit}>
+                    <Card className="Profile-card">
+                        <h1>{currentUser.username}</h1>
+                        <CardBody>
+                            <Form onSubmit={handleSubmit}>
 
-                                    <FormGroup>
-                                        <Label>First Name:</Label>
-                                        <Input
-                                            type="text"
-                                            name="first_name"
-                                            value={formData.first_name}
-                                            onChange={handleChange}
-                                        />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Last Name:</Label>
-                                        <Input
-                                            type="text"
-                                            name="last_name"
-                                            value={formData.last_name}
-                                            onChange={handleChange}
-                                        />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Email:</Label>
-                                        <Input
-                                            type="text"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                        />
-                                    </FormGroup>
-                                    {/* <FormGroup>
-                                    <Label>Confirm password to make changes:</Label>
+                                <FormGroup>
+                                    <Label>First Name:</Label>
                                     <Input
-                                        type="password"
-                                        name="password"
-                                        value={formData.password}
+                                        type="text"
+                                        name="first_name"
+                                        value={formData.first_name}
                                         onChange={handleChange}
                                     />
-                                </FormGroup> */}
-                                    <Button color="primary">Save Changes</Button>
-                                </Form>
-                            </CardBody>
-                        </Card>
-                    </div>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label>Last Name:</Label>
+                                    <Input
+                                        type="text"
+                                        name="last_name"
+                                        value={formData.last_name}
+                                        onChange={handleChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label>Email:</Label>
+                                    <Input
+                                        type="text"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                    />
+                                </FormGroup>
+                                <div className="btn-form">
+                                    {saved
+                                        ?
+                                        <div className="saved">Saved!</div>
+                                        :
+                                        <Button className="btn-submit-changes" color="primary">Save Changes</Button>
+                                    }
+                                </div>
+                            </Form>
+                        </CardBody>
+                    </Card>
                 </Container>
-                <Container className="user-hobbies-container" fluid={true}>
-                    <div className="col-6 offset-md-3">
-                        <p className="user-hobbies" >{currentUser.username} Hobby List:</p>
-                        {currentUser.hobbies.length == 0
-                            ?
-                            <h3 className="no-hobbies">No Hobbies at the moment...</h3>
-                            :
-                            <>
-                                {currentUser.hobbies.map(hobby => (
-                                    <ul key={hobby.id}>
-                                        <div className="user-activity">{hobby.activity}</div>
-                                        <div className="btn">
-                                            {/* <Button
-                                            outline color="success"
-                                            onClick={() => editHobby(hobby.id)}
-                                        >
-                                            <MdEdit />
-                                        </Button> */}
-                                            <Button
-                                                outline color="danger"
-                                                onClick={() => delHobby(hobby.id)}
-                                            ><FaTrashAlt /></Button>
-                                        </div>
-                                    </ul>
-                                ))}
-                            </>}
-                    </div>
-                </Container>
+                <div className="user-hobbies-container">
+                    <p className="user-hobbies" >{currentUser.username} Hobby List:</p>
+                    {currentUser.hobbies.length == 0
+                        ?
+                        <h3 className="no-hobbies">No Hobbies at the moment...</h3>
+                        :
+                        <div>
+                            {currentUser.hobbies.map(hobby => (
+                                <ul key={hobby.id}>
+                                    <div className="user-activity">{hobby.activity}</div>
+                                    <div className="btn">
+                                        <Button
+                                            outline color="danger"
+                                            onClick={() => delHobby(hobby.id)}
+                                        ><FaTrashAlt /></Button>
+                                    </div>
+                                </ul>
+                            ))}
+                        </div>}
+                </div>
             </div>
             <div className="go-back-btn">
                 <Link id="hobbies-btn" to="/hobbies">
